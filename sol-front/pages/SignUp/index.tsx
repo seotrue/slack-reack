@@ -2,6 +2,7 @@ import { Button, Error, Form, Header, Input, Label, LinkContainer, Success } fro
 import React, { useCallback, useState } from 'react';
 import useInput from "@hooks/useInput";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 
 const SignUp = () => {
@@ -53,19 +54,19 @@ const SignUp = () => {
         <Label id="email-label">
           <span>이메일 주소</span>
           <div>
-            <Input type="email" id="email" name="email" value={email} onChange={onChangeEmail} />
+            <Input type="email" id="email" name="email" value={email} onChange={onChangeEmail}/>
           </div>
         </Label>
         <Label id="nickname-label">
           <span>닉네임</span>
           <div>
-            <Input type="text" id="nickname" name="nickname" value={nickname} onChange={onChangeNickname} />
+            <Input type="text" id="nickname" name="nickname" value={nickname} onChange={onChangeNickname}/>
           </div>
         </Label>
         <Label id="password-label">
           <span>비밀번호</span>
           <div>
-            <Input type="password" id="password" name="password" value={password} onChange={onChangePassword} />
+            <Input type="password" id="password" name="password" value={password} onChange={onChangePassword}/>
           </div>
         </Label>
         <Label id="password-check-label">
@@ -88,7 +89,7 @@ const SignUp = () => {
       </Form>
       <LinkContainer>
         이미 회원이신가요?&nbsp;
-        <a href="/login">로그인 하러가기</a>
+        <Link to="/login">로그인 하러가기</Link>
       </LinkContainer>
     </div>
   );
