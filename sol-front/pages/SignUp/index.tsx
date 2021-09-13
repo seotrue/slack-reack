@@ -2,10 +2,14 @@ import { Button, Error, Form, Header, Input, Label, LinkContainer, Success } fro
 import React, { useCallback, useState } from 'react';
 import useInput from "@hooks/useInput";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import useSWR from "swr/esm/use-swr";
+import fetcher from "@utils/fetcher";
 
 
 const SignUp = () => {
+  const { data, error, revalidate, mutate } = useSWR('http://locallhost:3095/api/users',fetcher);
+
   const [email, onChangeEmail] = useInput('');
   const [nickname, onChangeNickname] = useInput('');
   const [password, setPassword] = useState('');
@@ -45,7 +49,15 @@ const SignUp = () => {
         })
         .finally(()=>{});
     }
-  },[email, nickname, password, passwordCheck])
+  },[email, nickname, password, passwordCheck]);
+
+  if (data === undefined){
+    return <div>로딩중...</div>
+  }
+
+  if (!data){
+    return <Redirect to={'/login'} />
+  };
 
   return (
     <div id="container">
