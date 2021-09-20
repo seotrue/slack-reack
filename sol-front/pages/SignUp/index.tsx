@@ -8,7 +8,7 @@ import fetcher from "@utils/fetcher";
 
 
 const SignUp = () => {
-  const { data, error, revalidate, mutate } = useSWR('http://locallhost:3095/api/users',fetcher);
+  const { data, error, mutate } = useSWR('http://locallhost:3095/api/users',fetcher);
 
   const [email, onChangeEmail] = useInput('');
   const [nickname, onChangeNickname] = useInput('');
@@ -34,30 +34,32 @@ const SignUp = () => {
       console.log('회원가입하기');
       setSignUpError('');
       setSignUpSuccess(false);
-      axios.post('http://localhost:3095/api/users',{
-        email,
-        nickname,
-        password
-      })
-        .then((reponse)=>{
-          console.log(reponse);
-          setSignUpSuccess(true);
-        })
-        .catch((err)=>{
-          console.log(err.response)
-          setSignUpError(err.response.data)
-        })
-        .finally(()=>{});
     }
+    axios.post('/api/users',{
+      email,
+      nickname,
+      password
+    })
+      .then((reponse)=>{
+        console.log(reponse);
+        setSignUpSuccess(true);
+      })
+      .catch((err)=>{
+        console.log(err.response)
+        setSignUpError(err.response.data)
+      })
+      .finally(()=>{});
   },[email, nickname, password, passwordCheck]);
 
-  if (data === undefined){
-    return <div>로딩중...</div>
-  }
+  // if (data === undefined){
+  //   return <div>로딩중...</div>
+  // }
 
-  if (!data){
-    return <Redirect to={'/login'} />
-  };
+
+
+  // if (!data){
+  //   return <Redirect to={'/login'} />
+  // };
 
   return (
     <div id="container">

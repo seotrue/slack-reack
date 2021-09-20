@@ -3,8 +3,69 @@
 - components - 공통되는 컴포넌트, 쪼갠 컴포넌트
 - layouts -  공통되는 레이아웃
 
-
+## 서버 준비사항
+// 프록시 서버
+> npm i webpack-dev-server -D //D는 개발용
+> npm i webpack-cli
+>
+- 프론트 실행시
+> npm run dev
 ## 강의 정리
+
+딱 하나의 컴포넌트에서만 사용하는 비동기의 경우
+
+리덕스로 뺄 이유없다
+
+=> 해당 컴포넌트 내에서 해결하자
+
+01:08
+
+수정
+
+삭제
+axios .post('주소',{
+
+데이터(바디)
+
+}).then(()=>{성공시})
+
+.catch(()=>{실패시})
+
+.finally(()=>{성공, 실패 공통으로 들어갈 })  =>>>> try catch 문에서도 사용 가능
+
+02:17
+
+수정
+
+삭제
+네트워크 탭
+
+해더의 의미 알기
+
+200번대 성공
+
+https 적용 하기 
+
+06:21
+
+수정
+
+삭제
+프론트랑 백이랑 포트가 다르면 options? 같은 네트워크 탭에 보면 api 호출이 한번더 되어잇다
+
+원래라면  백/프론트 주소가 다르면api 호출이 안된다
+
+->  그냥 하면 Access to XMLHTTpREqust at '주소'...
+
+관련 에러가 나오는데 해결 방벙은 2가지 잇다
+
+1. 백엔드의 설정
+
+2. 웹백 데브 서버에서 
+
+프로시 서버설정을 하면 됨
+
+/////
 
 커스텀 훅
 //TS가 인라인 콜백함수는 매개변수를 추론해줍니다
@@ -86,4 +147,62 @@ swr이 꼭 비동기 요청에만 관련된ㄱ 아니다 전역 데이터 저장
 - 단일책임원칙: 하나의 컴초넌트는 하나의 역활만한다.=> 이거에 따라 컴포넌트 분리하는것두 권장
 
 - 타입스크립트 할때는 props의 타입을 적어놓아야함
- 
+- console.trace
+
+- 인풋이 잇으면 컴포넌트 분리하는게 좋타 => 온체인지 될때마다 리렌더링되기때문에
+- 띄어쓰기 맞기 위해 trim()도 
+>>npm i react-toastify
+
+#### 체널 만드는 모달
+- props로 받는 데이터를 타입 interface로 지정해준다
+
+##### 주소 설계
+1.라우터 파라미터
+```
+// A // 그래서 파라미터가 ㅇ안붙은 애가 온다면 먼자 써줘라 우선 순위 때문에  
+<Route path="/workspace/slack" component={Wrokspce} />
+// 뒤에 :를 붙이면 파라미터가 된다 자유롭게 값을 바꿀수 잇다 => 모든값을 받을수 잇다
+<Route path="/workspace/:workspace" component={Wrokspce} />
+// 그래서 파라미터가 ㅇ안붙은 애가 온다면 먼자 써줘라 
+```
+
+
+```javascript
+const LogIn = () => {
+  // (주소, fetcher: 주소를 어떻게 처리할지를 적어주는 함수 )
+  /*
+    utill에 fetcher에 reponse.data로 리턴하기때문에 구조분해 해서
+    const { data }가 들어가는거고 data가 없으면 로딩중인
+   */
+  // data ore error 값이 바뀌는 순간 리렌더링 된다
+  const { data, error, revalidate, mutate } = useSWR('/api/users', fetcher,{
+    //dedupingInterval: 100000,// 백초마다 한번씩 swr 호출 하겟다
+  }); // => 밑에 axios 로그인이 되면 해당 유저 정보를 갖고온다 만약 로그인이 안되어 잇으면 해당 유저 정보가 false 로 가져온다
+  const [logInError, setLogInError] = useState(false);
+  const [email, onChangeEmail] = useInput('');
+  const [password, onChangePassword] = useInput('');
+  // 내로그인 정보를 가져온 로그인이 되어있지 않으면 false를 리턴
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      setLogInError(false);
+      axios
+        .post(
+          '/api/users/login',
+          { email, password },
+          {withCredentials: true}
+        )
+        .then((response) => {
+          // login 성공시 revalidate가 fetcher함수를 바로 부른다
+          //revalidate()
+          // 기존의 제정보를 data에 바로 넣어버이는것
+          mutate(response.data, true);
+        })
+        .catch((error) => {
+          setLogInError(error.response?.data?.statusCode === 401);
+        });
+    },
+    [email, password, mutate]
+  );
+
+```

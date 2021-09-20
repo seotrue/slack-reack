@@ -6,7 +6,9 @@ const Channel = () => {
   return(
 
       <Container>
-        <Header></Header>
+        <Header>
+          ?
+        </Header>
       </Container>
 
   )

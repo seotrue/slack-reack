@@ -13,9 +13,9 @@ const LogIn = () => {
     const { data }가 들어가는거고 data가 없으면 로딩중인
    */
   // data ore error 값이 바뀌는 순간 리렌더링 된다
-  const { data, error, revalidate, mutate } = useSWR('http://locallhost:3095/api/users', fetcher,{
-    dedupingInterval: 100000,// 백초마다 한번씩 swr 호출 하겟다
-  });
+  const { data, error, revalidate, mutate } = useSWR('/api/users', fetcher,{
+    //dedupingInterval: 100000,// 백초마다 한번씩 swr 호출 하겟다
+  }); // => 밑에 axios 로그인이 되면 해당 유저 정보를 갖고온다 만약 로그인이 안되어 잇으면 해당 유저 정보가 false 로 가져온다
   const [logInError, setLogInError] = useState(false);
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
@@ -28,7 +28,7 @@ const LogIn = () => {
         .post(
           '/api/users/login',
           { email, password },
-          {withCredentials: true}
+          {withCredentials: true} // 쿠키 생성
         )
         .then((response) => {
           // login 성공시 revalidate가 fetcher함수를 바로 부른다
@@ -40,15 +40,14 @@ const LogIn = () => {
           setLogInError(error.response?.data?.statusCode === 401);
         });
     },
-    [email, password],
+    [email, password, mutate]
   );
-
+  console.log(error, data,'data')
   // if (data === undefined){
   //   return <div>로딩중...</div>
   // }
-  console.log(data,'data')
-  if (data){
 
+  if (data){
     return <Redirect to={'/workspace/channel'}/>
   }
 
