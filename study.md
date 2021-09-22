@@ -206,3 +206,4 @@ const LogIn = () => {
   );
 
 ```
+>  console.dir(err)
