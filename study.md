@@ -165,8 +165,18 @@ swr이 꼭 비동기 요청에만 관련된ㄱ 아니다 전역 데이터 저장
 <Route path="/workspace/:workspace" component={Wrokspce} />
 // 그래서 파라미터가 ㅇ안붙은 애가 온다면 먼자 써줘라 
 ```
+```
+<Route path={'/workspace/channel/:channel'} component={Channel}/>
+<Route path={'/workspace/dm/:id'} component={DirectMessage}/>
+```
+- 라우터에 `주소/:파리미터`로 사용할수 잇고 해당 주소를 데이터처럼 사용할수 잇는데 불러오는 법은 
+```
+// useParams를 사용해서 :channel, :workspace 를 파라마터롤 사용했기때문에 변수로 불러오고, 타입스트립트 사용하는 자는 useParams 뒤에 해당 객체 타입을 정의 해줘야한다.
+const { workspace, channel } = useParams<{workspace: string, channel: string}>();
 
+```
 
+ 
 ```javascript
 const LogIn = () => {
   // (주소, fetcher: 주소를 어떻게 처리할지를 적어주는 함수 )
@@ -207,3 +217,4 @@ const LogIn = () => {
 
 ```
 >  console.dir(err)
+ 

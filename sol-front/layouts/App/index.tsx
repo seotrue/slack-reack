@@ -14,7 +14,8 @@ const App = () => (
     </Route>
     <Route path="/login" component={LogIn} />
     <Route path="/signup" component={SignUp} />
-    <Route path="/workspace" component={Workspace} />
+    {/* 사용자가 파라미터로 넣을수 잇음 => /: 뒤에 오는 단어*/}
+    <Route path="/workspace/:workspace" component={Workspace} />
   </Switch>
 );
 
