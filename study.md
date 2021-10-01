@@ -217,4 +217,9 @@ const LogIn = () => {
 
 ```
 >  console.dir(err)
+ ### 배포 환경
+ - webpack.config.ts의 devSever 옵션은 개발환경 옵션이기 때문에 배포시 자동적으로 적용이 안된다
  
+##### <NavLink>
+- activceClassName 속성 을 가짐
+

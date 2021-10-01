@@ -25,6 +25,8 @@ import CreateChannelModal from '@components/CreateChannelModal/index'
 import { toast } from "react-toastify";
 import { useParams } from "react-router";
 import InviteWorkspaceModal from "@components/InviteWorkspaceModal";
+import DMList from "@components/DMList";
+import ChannelList from "@components/ChannelList";
 
 const Channel = loadable(() => import('@pages/Channel'));
 const DirectMessage = loadable(() => import('@pages/DirectMessage'));
@@ -45,6 +47,9 @@ const Workspace:VFC = () => {
   const { data: userDate, error, revalidate, mutate } = useSWR<IUser | false>('/api/users',fetcher);
   // swr 조건부 요청을 할수 잇음 userDate 가 잇으면 워크스페이스 별로 채널을 가져옴 아니면 요청 안함
   const { data: channelData } = useSWR<IChannel[]>(userDate ? `/api/workspaces/${workspace}/channels`:null, fetcher)
+
+
+  const { data: memberData } = useSWR<IChannel[]>(userDate ? `/api/workspaces/${workspace}/channels`:null, fetcher)
 
   console.log(newWorkspace,'newWorkspace------')
   const onLogout = useCallback(() => {
@@ -179,9 +184,8 @@ const Workspace:VFC = () => {
                 <button onClick={onLogout}>로그아웃</button>
               </WorkspaceModal>
             </Menu>
-            {channelData?.map((v)=>(
-              <div>{v.name}</div>
-            ))}
+            <ChannelList />
+            <DMList />
           </MenuScroll>
         </Channels>
         {/*디엠*/}
