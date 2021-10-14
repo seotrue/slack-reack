@@ -223,3 +223,19 @@ const LogIn = () => {
 ##### <NavLink>
 - activceClassName 속성 을 가짐
 
+
+### useCallback
+- useCallbalck 함수 기준으로 외부 변수면 deps에 써주고 내부변수면 안써주고
+useCallback : 성능 최적화
+
+함수 컴포넌트는 매번 전체 함수가 매번 재실행하기 때문에
+
+useCallback으로 서능 최적화
+
+되서 재생성 되서 유지 콜벨 사용
+
+의미는  이 함수를 캐싱 해둬라
+
+deps로 주는 값이  바뀌면 새로운 함수로 재실해 해라
+
+### eslint cpzm
