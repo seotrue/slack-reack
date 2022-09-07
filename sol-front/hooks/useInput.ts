@@ -11,4 +11,6 @@ const useInput = <T = any>(ininitialData: T): ReturnTypes<T> => {
   return [value, handler, setValue];
 };
 
+console.log('dddd')
+
 export default useInput;
