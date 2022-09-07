@@ -9,6 +9,7 @@ const useInput = <T = any>(ininitialData: T): ReturnTypes<T> => {
     setValue(e.currentTarget.value);
   },[]);
   return [value, handler, setValue];
+  console.log('sol')
 };
 
 console.log('dddd')
